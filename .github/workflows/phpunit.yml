@@ -34,4 +34,4 @@ jobs:
 
       # étape 4 : lancer PHPUnit
       - name: Lancer les tests PHPUnit
-        run: ./vendor/bin/phpunit --testdox
+        run: php vendor/bin/phpunit --testdox
