@@ -1,48 +1,37 @@
-#Nom affiché dans l'interface Github Actions
-
+# Nom affiché dans l'interface Github Actions
 name: PHPUnit tests
 
-#Déclencheurs : quand Lancer ce workflow ? 
-
+# Déclencheurs : quand lancer ce workflow ?
 on:
-push:
-  branches: [main]  # a chaque push sur la branche main, mettre[main,develop] si besoin aussi sur la branche develop
+  push:
+    branches: [main]
   pull_request:
-  branches: [main] # a chaque pull request vers main, mettre [main,develop] si besoin aussi sur la branche develop
-
+    branches: [main]
 
 # les jobs : ce qu'on veut faire
 jobs:
+  # nom du job (libre, doit être en minuscules sans espaces)
+  test:
+    # Type de machine virtuelle à utiliser
+    runs-on: ubuntu-latest
 
-#nom du job (libre,doit etre en minuscules sans espaces)
-test:
+    # Les étapes du job, exécutées dans l'ordre
+    steps:
+      # étape 1 : récupérer le code du dépôt sur la machine virtuelle
+      - name: Récupérer le code
+        uses: actions/checkout@v4
 
-#Type de machine virtuel a utiliser
-#ubuntu-latest = derniere version stable d'ubuntu, gratuit sur github
-runs-on: ubuntu-latest
+      # étape 2 : installer PHP sur la machine virtuelle
+      - name: Installer PHP 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
 
-#Les étapes du job, executées dans l'ordre
-steps:
+      # étape 3 : installer PHPUnit et les dépendances via Composer
+      - name: Installer les dépendances Composer
+        run: composer install --no-interaction --prefer-dist
 
-#etape 1: recuperer le code du dépot sur la machine virtuelle
-#"actions/checkout" est une action officielle Github
--name: Récupérer le code
-uses: actions/checkout@v4
-
-#Etape 2 : installer PHP sur la machien virtuelle
-#"actions/checkout" est une action officielle Github
--name: Installer PHP 8.2
-uses: shivammathur/ setup-php@v2
-with:
-php-version: '8.2'
-coverage: none #on ne génère pas de rapport de couverture ici
-
-#Etape 3: installer PHPUnit et les autres dépendances via Composer
-#--no-interaction : pas de question interactives
-#--prefer-dist : télécharge les archives pluto que les sources (plus rapide)
--name: Installer les dépendances Composer
-run: composer install --no-interaction --prefer-dist
-
-#Etape 4 : Lancer PHPUnit
--name: LAncer les tests PHPUnit
-run:./vendor/bin/phpunit --testdox
+      # étape 4 : lancer PHPUnit
+      - name: Lancer les tests PHPUnit
+        run: ./vendor/bin/phpunit --testdox
