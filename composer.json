@@ -1,0 +1,19 @@
+{
+    "name": "mediatheque/app",
+    "description": "Application Mediatheque - Parcours POO & MVC",
+    "type": "project",
+    "require-dev":{"phpunit/phpunit": "^9.6"
+},
+"autoload": {
+    "psr-4": {
+        "Mediatheque\\": "classes/"
+
+    }
+},
+"autoload-dev": {
+    "psr-4": {
+        "Mediatheque\\Tests\\": "tests/"
+    }   
+}
+
+}
